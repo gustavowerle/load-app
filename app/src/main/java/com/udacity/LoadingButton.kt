@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.withStyledAttributes
 import kotlin.properties.Delegates
 
 class LoadingButton @JvmOverloads constructor(
@@ -18,7 +19,8 @@ class LoadingButton @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     private var buttonText: String
-    private var buttonBackgroundColor: Int
+    private var buttonTextColor: Int = 0
+    private var buttonBackgroundColor: Int = 0
     private var buttonProgress: Float = 0f
 
     private var valueAnimator = ValueAnimator()
@@ -60,7 +62,10 @@ class LoadingButton @JvmOverloads constructor(
 
     init {
         buttonText = resources.getString(R.string.button_download)
-        buttonBackgroundColor = ContextCompat.getColor(context, R.color.colorPrimary)
+        context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
+            buttonBackgroundColor = getColor(R.styleable.LoadingButton_backgroundColor, 0)
+            buttonTextColor = getColor(R.styleable.LoadingButton_textColor, 0)
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
